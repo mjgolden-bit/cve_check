@@ -1,0 +1,39 @@
+name: NetApp Web Monitor
+
+on:
+  schedule:
+    - cron: '0 0 */2 * *'
+  workflow_dispatch:
+
+# Permisos explícitos requeridos para que GITHUB_TOKEN pueda hacer push de cambios al repositorio
+permissions:
+  contents: write
+
+jobs:
+  run-monitor:
+    runs-on: ubuntu-latest
+    steps:
+    - name: Descargar código
+      uses: actions/checkout@v4
+
+    - name: Configurar Python
+      uses: actions/setup-python@v5
+      with:
+        python-version: '3.10'
+
+    - name: Instalar dependencias
+      run: |
+        python -m pip install --upgrade pip
+        pip install -r requirements.txt
+
+    - name: Ejecutar Monitor
+      env:
+        EMAIL_PASSWORD: ${{ secrets.EMAIL_PASSWORD }}
+      run: python monitor.py
+
+    - name: Guardar cambios de estado
+      run: |
+        git config --global user.name "GitHub Action"
+        git config --global user.email "action@github.com"
+        git add url_hashes.json saved_pages/
+        git diff --quiet && git diff --staged --quiet || (git commit -m "Actualizar hashes" && git push)
