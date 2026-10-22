@@ -20,7 +20,8 @@ urls_to_monitor = [
     "https://security.netapp.com/advisory/ntap-20260610-0003",
     "https://security.netapp.com/advisory/ntap-20260710-0020",
     "https://security.netapp.com/advisory/ntap-20260501-0001",
-    "https://security.netapp.com/advisory/ntap-20260513-0001"
+    "https://security.netapp.com/advisory/ntap-20260513-0001",
+    "https://security.netapp.com/advisory/NTAP-20261021-0021"
 ]
 
 HASH_FILE = "url_hashes.json"
